@@ -2,7 +2,9 @@
   "name": "gastar-me",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Leonardo Ribeiro <contato@leoribeiroweb.com.br>",
+  "repository": "https://github.com/leoribeirowebmaster/gaster-me.git",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -41,7 +43,8 @@
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.7.0",
     "tslint": "5.12.1",
-    "typescript": "^3.2.4"
+    "typescript": "^3.2.4",
+    "semantic-release": "^15.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
