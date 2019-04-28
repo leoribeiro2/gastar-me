@@ -6,6 +6,13 @@ jobs:
     steps:
       - checkout
       - run: npm install
+      - run: npm run test
+  test-cov:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - run: npm install
       - run: npm run test:cov
   release:
     docker:
@@ -19,7 +26,18 @@ workflows:
   version: 2
   test_and_release:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore:
+                - master
+      - test-cov:
+          filters:
+            branches:
+              only: master
       - release:
           requires:
-            - test
+            - test-cov
+          filters:
+            branches:
+              only: master
