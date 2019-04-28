@@ -6,6 +6,17 @@
   "repository": "https://github.com/leoribeirowebmaster/gaster-me.git",
   "private": true,
   "license": "MIT",
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      ["@semantic-release/changelog", {
+        "changelogFile": "CHANGELOG.md",
+        "changelogTitle": "GASTAR-ME"
+      }],
+      "@semantic-release/git"
+    ]
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -37,6 +48,7 @@
   },
   "devDependencies": {
     "@nestjs/testing": "^6.0.0",
+    "@semantic-release/changelog": "^3.0.2",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^4.16.0",
     "@types/jest": "^23.3.13",
