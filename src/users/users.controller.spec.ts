@@ -58,15 +58,16 @@ describe('Users Controller', () => {
 
     // @ts-ignore
     jest.spyOn(usersService, 'get').mockImplementation(() => result);
-    expect(await usersController.getUser('5cc4e3c80ca02c63b824dd88')).toEqual(result);
+    expect(await usersController.getUser('5cc4e3c80ca02c63b824dd88')).toEqual(
+      result,
+    );
   });
 
-  it('should receive an error when the user does not exist',    () => {
-    jest.spyOn(usersService, 'get').mockImplementation(() => (null));
-    usersController.getUser('5cc4e3c80ca02c63b824dd66')
-      .catch(e => {
-        expect(e.responses === { statusCode: 404, error: 'Not Found' });
-      });
+  it('should receive an error when the user does not exist', () => {
+    jest.spyOn(usersService, 'get').mockImplementation(() => null);
+    usersController.getUser('5cc4e3c80ca02c63b824dd66').catch(e => {
+      expect(e.responses === { statusCode: 404, error: 'Not Found' });
+    });
   });
 
   it('should get all users', async () => {

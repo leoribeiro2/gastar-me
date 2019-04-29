@@ -1,25 +1,28 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-export const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
+export const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+      unique: true,
+      index: true,
+    },
+    password: {
+      type: String,
+      select: false,
+    },
+    role: {
+      type: String,
+      enum: ['USER', 'ADMIN'],
+      default: 'USER',
+    },
   },
-  email: {
-    type: String,
-    unique: true,
-    index: true,
-  },
-  password: {
-    type: String,
-    select: false,
-  },
-  role: {
-    type: String,
-    enum: ['USER', 'ADMIN'],
-    default: 'USER',
-  },
-}, { timestamps: true });
+  { timestamps: true },
+);
 
 UserSchema.pre('save', function(next) {
   if (this.isModified('password')) {
@@ -32,7 +35,9 @@ UserSchema.pre('save', function(next) {
 UserSchema.methods.validatePass = function(password) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, this.password, (err, res) => {
-      if (err) { reject(err); }
+      if (err) {
+        reject(err);
+      }
       resolve(res);
     });
   });

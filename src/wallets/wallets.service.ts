@@ -1,8 +1,11 @@
 import { Model } from 'mongoose';
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { WalletInterface as Wallet } from './interface/wallet.interface';
-import { CreateCardDto } from './dto/createCard.dto';
+import { WalletInterface as Wallet } from './interfaces/wallet.interface';
 
 @Injectable()
 export class WalletsService {
@@ -17,50 +20,26 @@ export class WalletsService {
   }
 
   async getByUserId(userId: string) {
-    return await this.walletModel.find({ user: userId });
+    return await this.walletModel
+      .find({ user: userId })
+      .populate({ path: 'cards', populate: { path: 'cards' } });
   }
 
-  async getById(walletId: string, userId: string) {
-    const wallet = await this.walletModel.findById(walletId);
-
-    // todo: check if user is owner of wallet our admin user
-    if (wallet.user.toString() === userId) {
-      return wallet;
-    } else {
-      throw new UnauthorizedException();
-    }
+  async getById(walletId: string) {
+    return await this.walletModel
+      .findById(walletId)
+      .populate({ path: 'cards', populate: { path: 'cards' } });
   }
 
-  async addCard(userId: string, walletId: string, card: CreateCardDto) {
-    const wallet = await this.walletModel.findById(walletId);
-
-    // todo: check if user is owner of wallet our admin user
-    if (wallet.user.toString() === userId) {
-      wallet.cards.push(card);
-
-      return await wallet.save();
-    } else {
-      throw new UnauthorizedException();
-    }
+  async addCard(walletId: string, cardId: string) {
+    return await this.walletModel.findByIdAndUpdate(walletId, {
+      $push: { cards: cardId },
+    });
   }
 
-  async deleteCard(userId: string, walletId: string, cardId: string) {
-    const wallet = await this.walletModel.findById(walletId);
-
-    // todo: check if user is owner of wallet our admin user
-    if (wallet.user.toString() === userId) {
-      const validCard = await this.walletModel.findOne({ _id: walletId, cards: { $elemMatch: { _id: cardId }}});
-
-      if (!validCard) { throw new NotFoundException(); }
-
-      await wallet.updateOne({ $pull: { cards: { _id: cardId }}});
-
-      return {
-        message: 'Successful deleted',
-        statusCode: 200,
-      };
-    } else {
-      throw new UnauthorizedException();
-    }
+  async deleteCard(walletId: string, cardId: string) {
+    return await this.walletModel.findByIdAndUpdate(walletId, {
+      $pull: { cards: cardId },
+    });
   }
 }

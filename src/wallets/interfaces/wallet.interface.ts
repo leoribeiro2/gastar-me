@@ -1,8 +1,8 @@
-import { CardInterface } from './card.interface';
+import { CardInterface } from '../../cards/interfaces/card.interface';
 
 export interface WalletInterface {
-  id: string;
   user: string;
+  cards: [CardInterface];
   totalLimit: number;
   remainingLimit: number;
 }

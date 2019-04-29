@@ -1,11 +1,24 @@
 import * as mongoose from 'mongoose';
-import { CardSchema } from './card.schema';
+import { CardSchema } from '../../cards/schemas/card.schema';
 
-export const WalletSchema = mongoose.Schema({
-  user: mongoose.Schema.Types.ObjectId,
-  cards: [CardSchema],
-}, { toJSON: { virtuals: true }, toObject: { virtuals: true }, timestamps: true});
+export const WalletSchema = mongoose.Schema(
+  {
+    user: mongoose.Schema.Types.ObjectId,
+    cards: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Card',
+      },
+    ],
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    timestamps: true,
+  },
+);
 
+/*
 WalletSchema.virtual('totalLimit')
   .get(function() {
     if (this.cards.length > 0) {
@@ -15,3 +28,4 @@ WalletSchema.virtual('totalLimit')
       return 0;
     }
   });
+*/

@@ -11,7 +11,7 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
-      "@semantic-release/git"
+      "@semantic-release/github"
     ]
   },
   "scripts": {
@@ -48,6 +48,7 @@
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/commit-analyzer": "^6.1.0",
     "@semantic-release/git": "^7.0.8",
+    "@semantic-release/github": "^5.2.10",
     "@semantic-release/release-notes-generator": "^7.1.4",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^4.16.0",

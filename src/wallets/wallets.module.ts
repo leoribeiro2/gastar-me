@@ -6,9 +6,7 @@ import { WalletSchema } from './schemas/wallet.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: 'Wallet', schema: WalletSchema},
-    ]),
+    MongooseModule.forFeature([{ name: 'Wallet', schema: WalletSchema }]),
   ],
   controllers: [WalletsController],
   providers: [WalletsService],

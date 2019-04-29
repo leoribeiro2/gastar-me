@@ -1,13 +1,15 @@
 import { Model } from 'mongoose';
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserInterface as User } from './interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectModel('User') private readonly userModel: Model<User>,
-  ) {}
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async create(user) {
     try {

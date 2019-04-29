@@ -7,7 +7,7 @@ describe('UsersService', () => {
 
   beforeEach(async () => {
     const repoMock = {
-      create: (user) => {
+      create: user => {
         if (user.email === 'test1@test.com') {
           throw new Error('E11000');
         }
@@ -40,7 +40,7 @@ describe('UsersService', () => {
           __v: 0,
         },
       ],
-      findById: (id) => ({
+      findById: id => ({
         _id: id,
         role: 'USER',
         name: 'User Example 1',
@@ -63,7 +63,7 @@ describe('UsersService', () => {
   });
 
   describe('Create user', () => {
-    it('should create an user',  async () => {
+    it('should create an user', async () => {
       const createdUser = await service.create({
         name: 'Josh',
         email: 'josh@mail.com',
