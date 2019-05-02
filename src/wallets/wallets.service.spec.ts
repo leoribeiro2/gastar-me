@@ -12,6 +12,42 @@ describe('WalletsService', () => {
       const doc = {
         id: '5cc5375035cade6de3e47107',
         user: wallet.user,
+        cards: [
+          {
+            limits: {
+              remaining: 3000,
+              total: 6000,
+              used: 3000,
+            },
+          },
+          {
+            limits: {
+              remaining: 2000,
+              total: 4000,
+              used: 2000,
+            },
+          },
+        ],
+        _doc: {
+          id: '5cc5375035cade6de3e47107',
+          user: wallet.user,
+          cards: [
+            {
+              limits: {
+                remaining: 3000,
+                total: 6000,
+                used: 3000,
+              },
+            },
+            {
+              limits: {
+                remaining: 2000,
+                total: 4000,
+                used: 2000,
+              },
+            },
+          ],
+        },
       };
       docs.push(doc);
       return docs[0];
@@ -64,7 +100,7 @@ describe('WalletsService', () => {
   it('should create an wallet', async () => {
     const userId = '5cc4e3c80ca02c63b824dd88';
     const createdWallet = await service.create(userId);
-    expect(createdWallet.user).toEqual(userId);
+    expect(createdWallet._doc.user).toEqual(userId);
   });
 
   it('should get an wallet by id', async () => {
@@ -72,17 +108,15 @@ describe('WalletsService', () => {
     const userId = '5cc4e3c80ca02c63b824dd88';
     const wallet = await service.getById(walletId);
     expect(wallet.id).toEqual(walletId);
+    expect(wallet.limits.total).toEqual(10000);
+    expect(wallet.limits.used).toEqual(5000);
+    expect(wallet.limits.remaining).toEqual(5000);
   });
 
   it('should get wallets by user id', async () => {
     const userId = '5cc4e3c80ca02c63b824dd88';
     const wallets = await service.getByUserId(userId);
-    expect(wallets).toEqual([
-      {
-        id: '5cc5375035cade6de3e47107',
-        user: '5cc4e3c80ca02c63b824dd88',
-      },
-    ]);
+    expect(wallets[0].user).toEqual('5cc4e3c80ca02c63b824dd88');
   });
 
   it('should add card in wallet', async () => {

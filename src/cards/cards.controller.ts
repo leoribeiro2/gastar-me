@@ -11,6 +11,7 @@ import {
 import { CreateCardDto } from './dto/createCard.dto';
 import { CardsService } from './cards.service';
 import { WalletsService } from '../wallets/wallets.service';
+import { MongoIdValidation } from '../helpers/mongoIdValidation';
 
 @Controller('cards')
 export class CardsController {
@@ -24,7 +25,7 @@ export class CardsController {
     // todo: change to user auth user id
     const userId = '5cc4f2424cd7977d263fc2c0';
 
-    const wallet = await this.walletsService.getById(card.walletId);
+    const wallet = await this.walletsService.getById(card.wallet);
     if (!wallet) {
       throw new NotFoundException('Wallet not found');
     }
@@ -50,11 +51,11 @@ export class CardsController {
   }
 
   @Get(':id')
-  async getCard(@Param('id') cardId: string) {
+  async getCard(@Param() params: MongoIdValidation) {
     // todo: change to user auth user id
     const userId = '5cc4f2424cd7977d263fc2c0';
 
-    const card = await this.cardsService.findById(cardId);
+    const card = await this.cardsService.findById(params.id);
     if (!card) {
       throw new NotFoundException('Card not found');
     }
@@ -68,11 +69,11 @@ export class CardsController {
   }
 
   @Delete(':id')
-  async deleteCard(@Param('id') cardId: string) {
+  async deleteCard(@Param() params: MongoIdValidation) {
     // todo: change to user auth user id
     const userId = '5cc4f2424cd7977d263fc2c0';
 
-    const card = await this.cardsService.findById(cardId);
+    const card = await this.cardsService.findById(params.id);
     if (!card) {
       throw new NotFoundException('Card not found');
     }

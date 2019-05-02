@@ -2,14 +2,13 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
   NotFoundException,
   Param,
   Post,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/createUser.dto';
+import { MongoIdValidation } from '../helpers/mongoIdValidation';
 
 @Controller('users')
 export class UsersController {
@@ -21,8 +20,8 @@ export class UsersController {
   }
 
   @Get('/:id')
-  async getUser(@Param('id') userId) {
-    const user = await this.usersService.get(userId);
+  async getUser(@Param() params: MongoIdValidation) {
+    const user = await this.usersService.get(params.id);
     if (user) {
       return user;
     } else {

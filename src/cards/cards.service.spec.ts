@@ -79,7 +79,9 @@ describe('WalletService', () => {
       };
       const userId = '5cc4f2424cd7977d263fc2c0';
       const walletId = '5cc60505d3f5e97094381fd4';
-      expect(await service.create(card, walletId, userId)).toEqual(card);
+      await service.create(card, walletId, userId).then(res => {
+        expect(res.number).toEqual('233432323457');
+      });
     });
 
     it('should receive error if the card already exists', async () => {

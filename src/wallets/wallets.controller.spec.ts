@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { WalletsController } from './wallets.controller';
 import { getModelToken } from '@nestjs/mongoose';
 import { WalletsService } from './wallets.service';
+import { MongoIdValidation } from '../helpers/mongoIdValidation';
 
 describe('Wallets Controller', () => {
   let controller: WalletsController;
@@ -60,18 +61,24 @@ describe('Wallets Controller', () => {
         user: '5cc4f2424cd7977d263fc2c0',
       };
 
+      const params: MongoIdValidation = {
+        id: '5cc5375035cade6de3e47107',
+      };
+
       // @ts-ignore
       jest.spyOn(walletsService, 'getById').mockImplementation(() => result);
-      expect(
-        await controller.getWalletById('5cc5375035cade6de3e47107'),
-      ).toEqual(result);
+      expect(await controller.getWalletById(params)).toEqual(result);
     });
 
     it('should not found error if the wallet does not exist', async () => {
       const result = null;
 
+      const params: MongoIdValidation = {
+        id: '5cc5375035cade6de3e47107',
+      };
+
       jest.spyOn(walletsService, 'getById').mockImplementation(() => result);
-      await controller.getWalletById('5cc5375035cade6de3e47107').catch(e => {
+      await controller.getWalletById(params).catch(e => {
         expect(e.response).toEqual({ statusCode: 404, error: 'Not Found' });
       });
     });
@@ -82,9 +89,13 @@ describe('Wallets Controller', () => {
         user: '5cc4f2424cd7977d263fc2c7',
       };
 
+      const params: MongoIdValidation = {
+        id: '5cc5375035cade6de3e47107',
+      };
+
       // @ts-ignore
       jest.spyOn(walletsService, 'getById').mockImplementation(() => result);
-      await controller.getWalletById('5cc5375035cade6de3e47107').catch(e => {
+      await controller.getWalletById(params).catch(e => {
         expect(e.response).toEqual({ statusCode: 401, error: 'Unauthorized' });
       });
     });

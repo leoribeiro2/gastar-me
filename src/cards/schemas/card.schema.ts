@@ -15,12 +15,20 @@ export const CardSchema = new mongoose.Schema(
     },
     cardHolderName: String,
     cvv: Number,
-    expiration: {
-      month: Number,
-      year: Number,
+    expirationDate: Date,
+    limits: {
+      total: Number,
+      used: {
+        type: Number,
+        default: 0,
+      },
+      remaining: {
+        type: Number,
+      },
     },
-    creditLimit: Number,
     closingDay: Number,
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );

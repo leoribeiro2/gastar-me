@@ -14,6 +14,12 @@
       "@semantic-release/github"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run format",
+      "pre-push": "npm run test"
+    }
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -38,6 +44,7 @@
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
     "dotenv": "^7.0.0",
+    "moment": "^2.24.0",
     "mongoose": "^5.5.4",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
@@ -56,6 +63,7 @@
     "@types/node": "^10.12.18",
     "@types/supertest": "^2.0.7",
     "coveralls": "^3.0.3",
+    "husky": "^2.1.0",
     "jest": "^23.6.0",
     "nodemon": "^1.18.9",
     "prettier": "^1.15.3",

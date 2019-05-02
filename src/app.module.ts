@@ -5,6 +5,7 @@ import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { WalletsModule } from './wallets/wallets.module';
 import { CardsModule } from './cards/cards.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CardsModule } from './cards/cards.module';
     UsersModule,
     WalletsModule,
     CardsModule,
+    TransactionsModule,
   ],
 })
 export class AppModule {}

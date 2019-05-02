@@ -20,15 +20,53 @@ export class WalletsService {
   }
 
   async getByUserId(userId: string) {
-    return await this.walletModel
+    const wallets = await this.walletModel
       .find({ user: userId })
       .populate({ path: 'cards', populate: { path: 'cards' } });
+
+    return await wallets.map(wallet => {
+      const remaining: number = wallet._doc.cards.reduce(
+        (a, b) => a.limits.remaining + b.limits.remaining,
+      );
+      const total: number = wallet._doc.cards.reduce(
+        (a, b) => a.limits.total + b.limits.total,
+      );
+      const used: number = wallet._doc.cards.reduce(
+        (a, b) => a.limits.used + b.limits.used,
+      );
+      return {
+        ...wallet._doc,
+        limits: {
+          total,
+          used,
+          remaining,
+        },
+      };
+    });
   }
 
   async getById(walletId: string) {
-    return await this.walletModel
+    const wallet = await this.walletModel
       .findById(walletId)
       .populate({ path: 'cards', populate: { path: 'cards' } });
+
+    const remaining: number = wallet._doc.cards.reduce(
+      (a, b) => a.limits.remaining + b.limits.remaining,
+    );
+    const total: number = wallet._doc.cards.reduce(
+      (a, b) => a.limits.total + b.limits.total,
+    );
+    const used: number = wallet._doc.cards.reduce(
+      (a, b) => a.limits.used + b.limits.used,
+    );
+    return {
+      ...wallet._doc,
+      limits: {
+        total,
+        used,
+        remaining,
+      },
+    };
   }
 
   async addCard(walletId: string, cardId: string) {
