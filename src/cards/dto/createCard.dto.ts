@@ -1,10 +1,11 @@
 import { ExpirationDto } from './expiration.dto';
-import { IsNotEmpty, ValidateNested } from 'class-validator';
+import { IsMongoId, IsNotEmpty, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateCardDto {
   @IsNotEmpty()
-  walletId: string;
+  @IsMongoId()
+  wallet: string;
 
   @IsNotEmpty()
   number: string;
@@ -21,7 +22,7 @@ export class CreateCardDto {
   expiration: ExpirationDto;
 
   @IsNotEmpty()
-  creditLimit: number;
+  totalLimit: number;
 
   @IsNotEmpty()
   closingDay: number;

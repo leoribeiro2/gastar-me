@@ -18,14 +18,13 @@ export const WalletSchema = mongoose.Schema(
   },
 );
 
-/*
-WalletSchema.virtual('totalLimit')
-  .get(function() {
-    if (this.cards.length > 0) {
-      const total = this.cards.reduce((acc, act) => ({creditLimit: acc.creditLimit + act.creditLimit}));
-      return total.creditLimit;
-    } else {
-      return 0;
-    }
-  });
-*/
+WalletSchema.virtual('totalLimit').get(function() {
+  if (this.cards.length > 0) {
+    const total = this.cards.reduce((acc, act) => ({
+      creditLimit: acc.creditLimit + act.creditLimit,
+    }));
+    return total.creditLimit;
+  } else {
+    return 0;
+  }
+});
