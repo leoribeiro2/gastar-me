@@ -8,6 +8,12 @@ describe('Wallets Controller', () => {
   let controller: WalletsController;
   let walletsService: WalletsService;
 
+  const req = {
+    user: {
+      _id: '5cc4f2424cd7977d263fc2c0',
+    },
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [WalletsController],
@@ -33,7 +39,7 @@ describe('Wallets Controller', () => {
 
       // @ts-ignore
       jest.spyOn(walletsService, 'create').mockImplementation(() => result);
-      expect(await controller.create()).toEqual(result);
+      expect(await controller.create(req)).toEqual(result);
     });
   });
 
@@ -50,7 +56,7 @@ describe('Wallets Controller', () => {
         .spyOn(walletsService, 'getByUserId')
         // @ts-ignore
         .mockImplementation(() => result);
-      expect(await controller.getWallets()).toEqual(result);
+      expect(await controller.getWallets(req)).toEqual(result);
     });
   });
 
@@ -67,7 +73,7 @@ describe('Wallets Controller', () => {
 
       // @ts-ignore
       jest.spyOn(walletsService, 'getById').mockImplementation(() => result);
-      expect(await controller.getWalletById(params)).toEqual(result);
+      expect(await controller.getWalletById(params, req)).toEqual(result);
     });
 
     it('should not found error if the wallet does not exist', async () => {
@@ -78,7 +84,7 @@ describe('Wallets Controller', () => {
       };
 
       jest.spyOn(walletsService, 'getById').mockImplementation(() => result);
-      await controller.getWalletById(params).catch(e => {
+      await controller.getWalletById(params, req).catch(e => {
         expect(e.response).toEqual({ statusCode: 404, error: 'Not Found' });
       });
     });
@@ -95,7 +101,7 @@ describe('Wallets Controller', () => {
 
       // @ts-ignore
       jest.spyOn(walletsService, 'getById').mockImplementation(() => result);
-      await controller.getWalletById(params).catch(e => {
+      await controller.getWalletById(params, req).catch(e => {
         expect(e.response).toEqual({ statusCode: 401, error: 'Unauthorized' });
       });
     });

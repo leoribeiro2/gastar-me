@@ -32,4 +32,10 @@ export class UsersService {
   async get(userId: string) {
     return this.userModel.findById(userId);
   }
+
+  async findByEmail(email: string) {
+    return await this.userModel
+      .findOne({ email })
+      .select('password name email role');
+  }
 }

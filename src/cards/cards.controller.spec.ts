@@ -4,10 +4,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { WalletsService } from '../wallets/wallets.service';
 import { CreateCardDto } from './dto/createCard.dto';
-import mock = jest.mock;
 import { MongoIdValidation } from '../helpers/mongoIdValidation';
 
 describe('Cards Controller', () => {
+  const req = {
+    user: {
+      _id: '5cc4f2424cd7977d263fc2c0',
+    },
+  };
+
   const mockCard = {
     expiration: {
       month: 2,
@@ -105,12 +110,12 @@ describe('Cards Controller', () => {
       jest.spyOn(cardsService, 'create').mockImplementation(() => mockCard);
       jest.spyOn(walletsService, 'addCard').mockImplementation(() => null);
 
-      expect(await controller.createCard(bodyMock)).toEqual(mockCard);
+      expect(await controller.createCard(bodyMock, req)).toEqual(mockCard);
     });
 
     it('should receive error not found if wallet does not exist', async () => {
       jest.spyOn(walletsService, 'getById').mockImplementation(() => null);
-      await controller.createCard(bodyMock).catch(e => {
+      await controller.createCard(bodyMock, req).catch(e => {
         expect(e.response).toEqual({
           statusCode: 404,
           error: 'Not Found',
@@ -137,7 +142,7 @@ describe('Cards Controller', () => {
 
       // @ts-ignore
       jest.spyOn(walletsService, 'getById').mockImplementation(() => result);
-      await controller.createCard(bodyMock).catch(e => {
+      await controller.createCard(bodyMock, req).catch(e => {
         expect(e.response).toEqual({
           statusCode: 401,
           error: 'Unauthorized',
@@ -152,7 +157,7 @@ describe('Cards Controller', () => {
         .spyOn(cardsService, 'getByUserId')
         // @ts-ignore
         .mockImplementation(() => mockCards);
-      expect(await controller.getCards()).toEqual(mockCards);
+      expect(await controller.getCards(req)).toEqual(mockCards);
     });
   });
 
@@ -164,7 +169,7 @@ describe('Cards Controller', () => {
 
       // @ts-ignore
       jest.spyOn(cardsService, 'findById').mockImplementation(() => mockCard);
-      expect(await controller.getCard(params)).toEqual(mockCard);
+      expect(await controller.getCard(params, req)).toEqual(mockCard);
     });
 
     it('should receive error not found if card does not exist', async () => {
@@ -174,7 +179,7 @@ describe('Cards Controller', () => {
         id: '5cc60519d3f5e97094381fd6',
       };
 
-      await controller.getCard(params).catch(e => {
+      await controller.getCard(params, req).catch(e => {
         expect(e.response).toEqual({
           statusCode: 404,
           error: 'Not Found',
@@ -206,7 +211,7 @@ describe('Cards Controller', () => {
         id: '5cc60519d3f5e97094381fd6',
       };
 
-      await controller.getCard(params).catch(e => {
+      await controller.getCard(params, req).catch(e => {
         expect(e.response).toEqual({
           statusCode: 401,
           error: 'Unauthorized',
@@ -230,7 +235,7 @@ describe('Cards Controller', () => {
         id: '5cc60519d3f5e97094381fd6',
       };
 
-      expect(await controller.deleteCard(params)).toEqual({
+      expect(await controller.deleteCard(params, req)).toEqual({
         statusCode: 200,
         message: 'Card has been deleted',
       });
@@ -243,7 +248,7 @@ describe('Cards Controller', () => {
         id: '5cc60519d3f5e97094381fd6',
       };
 
-      await controller.deleteCard(params).catch(e => {
+      await controller.deleteCard(params, req).catch(e => {
         expect(e.response).toEqual({
           statusCode: 404,
           error: 'Not Found',
@@ -274,7 +279,7 @@ describe('Cards Controller', () => {
 
       // @ts-ignore
       jest.spyOn(cardsService, 'findById').mockImplementation(() => result);
-      await controller.deleteCard(params).catch(e => {
+      await controller.deleteCard(params, req).catch(e => {
         expect(e.response).toEqual({
           statusCode: 401,
           error: 'Unauthorized',

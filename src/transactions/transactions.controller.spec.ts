@@ -13,6 +13,12 @@ describe('Transactions Controller', () => {
   let cardsService: CardsService;
   let walletsService: WalletsService;
 
+  const req = {
+    user: {
+      _id: '5cc4f2424cd7977d263fc2c0',
+    },
+  };
+
   const mockCards: any = [
     {
       _id: '5cca4836e8a1725fcb66adb2',
@@ -138,7 +144,7 @@ describe('Transactions Controller', () => {
         .spyOn(service, 'makeATransaction')
         .mockImplementation(async () => mockMakeTransaction);
 
-      await controller.create(body).then(transaction => {
+      await controller.create(body, req).then(transaction => {
         expect(transaction.user).toEqual('5cc4f2424cd7977d263fc2c0');
         expect(transaction.totalAmount).toEqual(1000);
       });
@@ -155,7 +161,7 @@ describe('Transactions Controller', () => {
         .spyOn(walletsService, 'getById')
         .mockImplementation(async () => null);
 
-      await controller.create(body).catch(e => {
+      await controller.create(body, req).catch(e => {
         expect(e.response).toEqual({
           error: 'Not Found',
           message: 'Wallet not found',
@@ -175,7 +181,7 @@ describe('Transactions Controller', () => {
         .spyOn(walletsService, 'getById')
         .mockImplementation(async () => mockWallet);
 
-      await controller.create(body).catch(e => {
+      await controller.create(body, req).catch(e => {
         expect(e.response).toEqual({
           error: 'Bad Request',
           message:
@@ -188,13 +194,11 @@ describe('Transactions Controller', () => {
 
   describe('Get Transactions', () => {
     it('should get transactions by user id', async () => {
-      const userId = '5cc4f2424cd7977d263fc2c0';
-
       jest
         .spyOn(service, 'findByUserId')
         .mockImplementation(async () => mockTransactions);
 
-      await controller.getTransactions().then(transactions => {
+      await controller.getTransactions(req).then(transactions => {
         expect(transactions).toEqual(mockTransactions);
         expect(service.findByUserId).toBeCalled();
       });
@@ -211,7 +215,7 @@ describe('Transactions Controller', () => {
         .spyOn(service, 'findById')
         .mockImplementation(async () => mockTransactions[0]);
 
-      await controller.getTransaction(params).then(transaction => {
+      await controller.getTransaction(params, req).then(transaction => {
         expect(transaction).toEqual(mockTransactions[0]);
         expect(service.findById).toBeCalled();
       });
@@ -224,7 +228,7 @@ describe('Transactions Controller', () => {
 
       jest.spyOn(service, 'findById').mockImplementation(async () => null);
 
-      await controller.getTransaction(params).catch(e => {
+      await controller.getTransaction(params, req).catch(e => {
         expect(e.response).toEqual({
           error: 'Not Found',
           message: 'Transaction not found',
@@ -243,7 +247,7 @@ describe('Transactions Controller', () => {
 
       jest.spyOn(service, 'findById').mockImplementation(async () => mock);
 
-      await controller.getTransaction(params).catch(e => {
+      await controller.getTransaction(params, req).catch(e => {
         expect(e.response).toEqual({
           error: 'Unauthorized',
           statusCode: 401,
@@ -265,7 +269,7 @@ describe('Transactions Controller', () => {
         .spyOn(service, 'payTransaction')
         .mockImplementation(async () => true);
 
-      await controller.payTransaction(params).then(res => {
+      await controller.payTransaction(params, req).then(res => {
         expect(res).toEqual({
           statusCode: 200,
           message: 'Transaction successfully paid',
@@ -282,7 +286,7 @@ describe('Transactions Controller', () => {
 
       jest.spyOn(service, 'findById').mockImplementation(async () => null);
 
-      await controller.payTransaction(params).catch(e => {
+      await controller.payTransaction(params, req).catch(e => {
         expect(e.response).toEqual({
           error: 'Not Found',
           message: 'Transaction not found',
@@ -300,7 +304,7 @@ describe('Transactions Controller', () => {
         .spyOn(service, 'findById')
         .mockImplementation(async () => mockTransactions[0]);
 
-      await controller.payTransaction(params).catch(e => {
+      await controller.payTransaction(params, req).catch(e => {
         expect(e.response).toEqual({
           error: 'Unauthorized',
           statusCode: 401,

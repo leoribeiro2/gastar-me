@@ -31,6 +31,7 @@
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "test:cov": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
@@ -38,7 +39,9 @@
   "dependencies": {
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
+    "@nestjs/jwt": "^6.0.0",
     "@nestjs/mongoose": "^6.1.2",
+    "@nestjs/passport": "^6.0.0",
     "@nestjs/platform-express": "^6.0.0",
     "bcrypt": "^3.0.6",
     "class-transformer": "^0.2.0",
@@ -46,6 +49,8 @@
     "dotenv": "^7.0.0",
     "moment": "^2.24.0",
     "mongoose": "^5.5.4",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3"
@@ -87,6 +92,10 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "../coverage",
+    "coveragePathIgnorePatterns": [
+      "/auth/",
+      "/node_modules/"
+    ],
     "testEnvironment": "node"
   }
 }

@@ -3,7 +3,6 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import { getModelToken } from '@nestjs/mongoose';
-import { MongoIdValidation } from '../helpers/mongoIdValidation';
 
 describe('Users Controller', () => {
   let usersController: UsersController;
@@ -47,6 +46,12 @@ describe('Users Controller', () => {
   });
 
   it('should get user by id', async () => {
+    const req = {
+      user: {
+        _id: '5cc4e3c80ca02c63b824dd89',
+      },
+    };
+
     const result = {
       role: 'USER',
       _id: '5cc4e3c80ca02c63b824dd88',
@@ -57,50 +62,21 @@ describe('Users Controller', () => {
       __v: 0,
     };
 
-    const params: MongoIdValidation = {
-      id: '5cc4e3c80ca02c63b824dd88',
-    };
-
     // @ts-ignore
     jest.spyOn(usersService, 'get').mockImplementation(() => result);
-    expect(await usersController.getUser(params)).toEqual(result);
+    expect(await usersController.getUser(req)).toEqual(result);
   });
 
   it('should receive an error when the user does not exist', () => {
-    const params: MongoIdValidation = {
-      id: '5cc4e3c80ca02c63b824dd88',
+    const errorReq = {
+      user: {
+        _id: '5cc4e3c80ca02c63b824dd89',
+      },
     };
 
     jest.spyOn(usersService, 'get').mockImplementation(() => null);
-    usersController.getUser(params).catch(e => {
+    usersController.getUser(errorReq).catch(e => {
       expect(e.responses === { statusCode: 404, error: 'Not Found' });
     });
-  });
-
-  it('should get all users', async () => {
-    const result = [
-      {
-        role: 'USER',
-        _id: '5cc4e3c80ca02c63b824dd88',
-        name: 'Josh',
-        email: 'josh@test.com',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        __v: 0,
-      },
-      {
-        role: 'USER',
-        _id: '5cc4e3c80ca02c63b824dd99',
-        name: 'Foo',
-        email: 'foo@test.com',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        __v: 0,
-      },
-    ];
-
-    // @ts-ignore
-    jest.spyOn(usersService, 'index').mockImplementation(() => result);
-    expect(await usersController.listUsers()).toEqual(result);
   });
 });

@@ -7,11 +7,14 @@ import {
   Param,
   Post,
   UnauthorizedException,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { CreateCardDto } from './dto/createCard.dto';
 import { CardsService } from './cards.service';
 import { WalletsService } from '../wallets/wallets.service';
 import { MongoIdValidation } from '../helpers/mongoIdValidation';
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 
 @Controller('cards')
 export class CardsController {
@@ -21,9 +24,9 @@ export class CardsController {
   ) {}
 
   @Post()
-  async createCard(@Body() card: CreateCardDto) {
-    // todo: change to user auth user id
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  @UseGuards(JwtAuthGuard)
+  async createCard(@Body() card: CreateCardDto, @Req() req) {
+    const userId = req.user._id;
 
     const wallet = await this.walletsService.getById(card.wallet);
     if (!wallet) {
@@ -41,9 +44,9 @@ export class CardsController {
   }
 
   @Get()
-  async getCards() {
-    // todo: change to user auth user id
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  @UseGuards(JwtAuthGuard)
+  async getCards(@Req() req) {
+    const userId = req.user._id;
 
     // todo: if admin query all cards
 
@@ -51,9 +54,9 @@ export class CardsController {
   }
 
   @Get(':id')
-  async getCard(@Param() params: MongoIdValidation) {
-    // todo: change to user auth user id
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  @UseGuards(JwtAuthGuard)
+  async getCard(@Param() params: MongoIdValidation, @Req() req) {
+    const userId = req.user._id;
 
     const card = await this.cardsService.findById(params.id);
     if (!card) {
@@ -69,9 +72,9 @@ export class CardsController {
   }
 
   @Delete(':id')
-  async deleteCard(@Param() params: MongoIdValidation) {
-    // todo: change to user auth user id
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  @UseGuards(JwtAuthGuard)
+  async deleteCard(@Param() params: MongoIdValidation, @Req() req) {
+    const userId = req.user._id;
 
     const card = await this.cardsService.findById(params.id);
     if (!card) {
