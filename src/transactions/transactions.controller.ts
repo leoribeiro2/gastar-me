@@ -9,6 +9,8 @@ import {
   UnauthorizedException,
   Put,
   HttpStatus,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDTO } from './dto/createTransaction.dto';
@@ -16,6 +18,7 @@ import { WalletsService } from '../wallets/wallets.service';
 import { CardsService } from '../cards/cards.service';
 import { MongoIdValidation } from '../helpers/mongoIdValidation';
 import * as moment from 'moment';
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -26,8 +29,9 @@ export class TransactionsController {
   ) {}
 
   @Post()
-  async create(@Body() body: CreateTransactionDTO) {
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  @UseGuards(JwtAuthGuard)
+  async create(@Body() body: CreateTransactionDTO, @Req() req) {
+    const userId = req.user._id;
 
     const wallet = await this.walletsService.getById(body.wallet);
     if (!wallet) {
@@ -51,15 +55,17 @@ export class TransactionsController {
   }
 
   @Get()
-  async getTransactions() {
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  @UseGuards(JwtAuthGuard)
+  async getTransactions(@Req() req) {
+    const userId = req.user._id;
 
     return await this.transactionsService.findByUserId(userId);
   }
 
   @Get('/:id')
-  async getTransaction(@Param() params: MongoIdValidation) {
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  @UseGuards(JwtAuthGuard)
+  async getTransaction(@Param() params: MongoIdValidation, @Req() req) {
+    const userId = req.user._id;
 
     const transaction = await this.transactionsService.findById(params.id);
     if (!transaction) {
@@ -75,8 +81,9 @@ export class TransactionsController {
   }
 
   @Put('/:id')
-  async payTransaction(@Param() params: MongoIdValidation) {
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  @UseGuards(JwtAuthGuard)
+  async payTransaction(@Param() params: MongoIdValidation, @Req() req) {
+    const userId = req.user._id;
 
     const transaction = await this.transactionsService.findById(params.id);
     if (!transaction) {

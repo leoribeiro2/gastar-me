@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { CardSchema } from '../../cards/schemas/card.schema';
 
 export const WalletSchema = mongoose.Schema(
   {

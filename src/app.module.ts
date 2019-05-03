@@ -6,6 +6,10 @@ import { ConfigService } from './config/config.service';
 import { WalletsModule } from './wallets/wallets.module';
 import { CardsModule } from './cards/cards.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { AuthModule } from './auth/auth.module';
+import * as mongoose from 'mongoose';
+
+mongoose.set('debug', true);
 
 @Module({
   imports: [
@@ -24,6 +28,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     WalletsModule,
     CardsModule,
     TransactionsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

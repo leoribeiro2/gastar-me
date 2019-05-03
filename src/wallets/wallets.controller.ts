@@ -5,40 +5,43 @@ import {
   Param,
   Post,
   UnauthorizedException,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { WalletsService } from './wallets.service';
 import { MongoIdValidation } from '../helpers/mongoIdValidation';
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 
 @Controller('wallets')
 export class WalletsController {
   constructor(private readonly walletsService: WalletsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create() {
-    // todo: change to user auth user id
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  async create(@Req() req) {
+    const userId = req.user._id;
+
     return this.walletsService.create(userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async getWallets() {
-    // todo: change to user auth user id
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  async getWallets(@Req() req) {
+    const userId = req.user._id;
 
     return this.walletsService.getByUserId(userId);
   }
 
-  @Get(':id')
-  async getWalletById(@Param() params: MongoIdValidation) {
-    // todo: change to user auth user id
-    const userId = '5cc4f2424cd7977d263fc2c0';
+  @UseGuards(JwtAuthGuard)
+  @Get('/:id')
+  async getWalletById(@Param() params: MongoIdValidation, @Req() req) {
+    const userId = req.user._id;
 
     const wallet = await this.walletsService.getById(params.id);
     if (!wallet) {
       throw new NotFoundException();
     }
 
-    // todo: check if user is owner of wallet our admin user
     if (wallet.user.toString() !== userId) {
       throw new UnauthorizedException();
     }
