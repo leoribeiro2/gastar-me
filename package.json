@@ -43,6 +43,7 @@
     "@nestjs/mongoose": "^6.1.2",
     "@nestjs/passport": "^6.0.0",
     "@nestjs/platform-express": "^6.0.0",
+    "@nestjs/swagger": "^3.0.2",
     "bcrypt": "^3.0.6",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
@@ -53,7 +54,8 @@
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "swagger-ui-express": "^4.0.2"
   },
   "devDependencies": {
     "@nestjs/testing": "^6.0.0",

@@ -15,7 +15,10 @@ import { CardsService } from './cards.service';
 import { WalletsService } from '../wallets/wallets.service';
 import { MongoIdValidation } from '../helpers/mongoIdValidation';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
+import { ApiUseTags, ApiBearerAuth, ApiUnauthorizedResponse, ApiOkResponse, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiUseTags('Cards')
 @Controller('cards')
 export class CardsController {
   constructor(
@@ -25,6 +28,9 @@ export class CardsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ title: 'Create a card' })
+  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiCreatedResponse({ description: 'Successful create a card' })
   async createCard(@Body() card: CreateCardDto, @Req() req) {
     const userId = req.user._id;
 
@@ -45,6 +51,9 @@ export class CardsController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ title: 'Get cards' })
+  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiOkResponse({ description: 'Retrive all user cards' })
   async getCards(@Req() req) {
     const userId = req.user._id;
 
@@ -55,6 +64,9 @@ export class CardsController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ title: 'Get a card by id' })
+  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiOkResponse({ description: 'Retrive a card by id' })
   async getCard(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;
 
@@ -73,6 +85,9 @@ export class CardsController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ title: 'Delete a card' })
+  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiOkResponse({ description: 'Successful delete a card' })
   async deleteCard(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;
 
