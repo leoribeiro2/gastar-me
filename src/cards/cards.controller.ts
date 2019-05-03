@@ -22,6 +22,7 @@ import {
   ApiOkResponse,
   ApiCreatedResponse,
   ApiOperation,
+  ApiImplicitParam,
 } from '@nestjs/swagger';
 
 @ApiBearerAuth()
@@ -74,6 +75,7 @@ export class CardsController {
   @ApiOperation({ title: 'Get a card by id' })
   @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Retrive a card by id' })
+  @ApiImplicitParam({ name: 'id', description: 'Card id' })
   async getCard(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;
 
@@ -95,6 +97,7 @@ export class CardsController {
   @ApiOperation({ title: 'Delete a card' })
   @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Successful delete a card' })
+  @ApiImplicitParam({ name: 'id', description: 'Card id' })
   async deleteCard(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;
 

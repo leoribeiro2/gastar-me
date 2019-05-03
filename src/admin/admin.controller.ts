@@ -7,6 +7,7 @@ import {
   ApiOkResponse,
   ApiBearerAuth,
   ApiOperation,
+  ApiImplicitParam,
 } from '@nestjs/swagger';
 
 @ApiBearerAuth()
@@ -27,6 +28,7 @@ export class AdminController {
   @ApiOperation({ title: 'Delete one wallet - ADMIN' })
   @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Successful delete wallet' })
+  @ApiImplicitParam({ name: 'id', description: 'Wallet id' })
   @UseGuards(JwtAdminGuard)
   @Delete('/wallets/:id')
   async deleteWallet(@Param() params) {

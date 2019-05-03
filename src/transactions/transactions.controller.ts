@@ -27,6 +27,7 @@ import {
   ApiOkResponse,
   ApiCreatedResponse,
   ApiOperation,
+  ApiImplicitParam,
 } from '@nestjs/swagger';
 
 @ApiBearerAuth()
@@ -71,7 +72,7 @@ export class TransactionsController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ title: 'Create trasactions' })
+  @ApiOperation({ title: 'Get trasactions' })
   @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Retrive all user transactions' })
   async getTransactions(@Req() req) {
@@ -85,6 +86,7 @@ export class TransactionsController {
   @ApiOperation({ title: 'Get a transaction by id' })
   @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Retrive transaction by id' })
+  @ApiImplicitParam({ name: 'id', description: 'Transaction id' })
   async getTransaction(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;
 
@@ -106,6 +108,7 @@ export class TransactionsController {
   @ApiOperation({ title: 'Pay a transaction' })
   @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Successful pay a transaction' })
+  @ApiImplicitParam({ name: 'id', description: 'Transaction id' })
   async payTransaction(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;
 

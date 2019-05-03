@@ -20,6 +20,7 @@ import {
   ApiUnauthorizedResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiImplicitParam,
 } from '@nestjs/swagger';
 
 @ApiBearerAuth()
@@ -56,6 +57,7 @@ export class WalletsController {
   @ApiOperation({ title: 'Get one wallet by id' })
   @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Retrive wallet by id' })
+  @ApiImplicitParam({ name: 'id', description: 'Wallet id' })
   async getWalletById(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;
 
