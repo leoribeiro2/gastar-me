@@ -2,9 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as compression from 'compression';
+import * as helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // compression
+  app.use(compression());
 
   // swagger
   const options = new DocumentBuilder()
@@ -28,6 +33,12 @@ async function bootstrap() {
 
   // set base path
   app.setGlobalPrefix('v1/api');
+
+  // helmet
+  app.use(helmet());
+
+  // cors
+  app.enableCors();
 
   await app.listen(3000);
 }
