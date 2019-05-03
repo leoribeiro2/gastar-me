@@ -55,9 +55,7 @@ export class CardsService {
     return await this.cardModel.find();
   }
 
-  async getBestCards(walletId: string): Promise<[Card]> {
-    const date = moment();
-
+  async getBestCards(walletId: string, date: any): Promise<[Card]> {
     const cards = await this.cardModel
       .find({
         wallet: walletId,
@@ -75,15 +73,15 @@ export class CardsService {
     return cards
       .map(card => {
         const closeDate = moment(
-          `${card.closingDay}-${
-            card.closingDay < date.date()
+          `${card._doc.closingDay}-${
+            card._doc.closingDay < date.date()
               ? date.month() + 1 + 1
               : date.month() + 1
           }`,
           'DD-MM',
         );
         return {
-          ...card._doc,
+          ...card,
           remainingDaysForClose: closeDate.diff(date, 'days'),
         };
       })
@@ -91,12 +89,9 @@ export class CardsService {
   }
 
   async updateLimits(id: string, data: { used: number; remaining: number }) {
-    mongoose.set('debug', true);
-    const update = await this.cardModel.findByIdAndUpdate(id, {
+    return await this.cardModel.findByIdAndUpdate(id, {
       'limits.used': data.used,
       'limits.remaining': data.remaining,
     });
-
-    return update;
   }
 }
