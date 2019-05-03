@@ -1,5 +1,14 @@
 import { ExpirationDto } from './expiration.dto';
-import { IsMongoId, IsNotEmpty, ValidateNested, Max, Min, IsNumber, MaxLength, MinLength } from 'class-validator';
+import {
+  IsMongoId,
+  IsNotEmpty,
+  ValidateNested,
+  Max,
+  Min,
+  IsNumber,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiModelProperty } from '@nestjs/swagger';
 

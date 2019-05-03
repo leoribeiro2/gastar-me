@@ -10,6 +10,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './intefaces/jwt-payload.interface';
 import { UsersService } from './../users/users.service';
+import { SignInDto } from './dto/signIn.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,11 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  async createToken(data) {
+  /**
+   * Create jwt and sign jwt token
+   * @param data email and password of user
+   */
+  async createToken(data: SignInDto) {
     const user = await this.usersService.findByEmail(data.email);
     if (!user) {
       throw new UnauthorizedException('Invalid user and/or password');
@@ -38,6 +43,10 @@ export class AuthService {
     };
   }
 
+  /**
+   * Check if exists user with email
+   * @param payload jwt payload with user email
+   */
   async validateUser(payload: JwtPayload): Promise<any> {
     return this.usersService.findByEmail(payload.email);
   }

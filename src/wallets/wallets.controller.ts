@@ -13,7 +13,14 @@ import {
 import { WalletsService } from './wallets.service';
 import { MongoIdValidation } from '../helpers/mongoIdValidation';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
-import { ApiUseTags, ApiBearerAuth, ApiCreatedResponse, ApiUnauthorizedResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiUseTags,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiUnauthorizedResponse,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiUseTags('Wallets')
@@ -25,8 +32,8 @@ export class WalletsController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ title: 'Create one wallet' })
-  @ApiCreatedResponse({ description: 'Successfull create card'})
-  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiCreatedResponse({ description: 'Successfull create card' })
+  @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   async create(@Req() req) {
     const userId = req.user._id;
 
@@ -36,7 +43,7 @@ export class WalletsController {
   @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ title: 'Get wallets' })
-  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Retrive all user wallets' })
   async getWallets(@Req() req) {
     const userId = req.user._id;
@@ -47,7 +54,7 @@ export class WalletsController {
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   @ApiOperation({ title: 'Get one wallet by id' })
-  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Retrive wallet by id' })
   async getWalletById(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;

@@ -1,7 +1,13 @@
 import { Controller, Get, Delete, Param, UseGuards } from '@nestjs/common';
 import { WalletsService } from './../wallets/wallets.service';
 import { JwtAdminGuard } from './../auth/guards/jwt-admin-guard';
-import { ApiUseTags, ApiUnauthorizedResponse, ApiOkResponse, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiUseTags,
+  ApiUnauthorizedResponse,
+  ApiOkResponse,
+  ApiBearerAuth,
+  ApiOperation,
+} from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiUseTags('Admin')
@@ -10,7 +16,7 @@ export class AdminController {
   constructor(private readonly walletsService: WalletsService) {}
 
   @ApiOperation({ title: 'Get all wallets - ADMIN' })
-  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Retrieve all wallets' })
   @UseGuards(JwtAdminGuard)
   @Get('/wallets')
@@ -19,7 +25,7 @@ export class AdminController {
   }
 
   @ApiOperation({ title: 'Delete one wallet - ADMIN' })
-  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Successful delete wallet' })
   @UseGuards(JwtAdminGuard)
   @Delete('/wallets/:id')

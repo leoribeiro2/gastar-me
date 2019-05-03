@@ -15,6 +15,12 @@ import { CardInterface as Card } from './interfaces/card.interface';
 export class CardsService {
   constructor(@InjectModel('Card') private readonly cardModel: Model<Card>) {}
 
+  /**
+   * Create a card on database
+   * @param card Card data
+   * @param walletId wallet id
+   * @param userId user id
+   */
   async create(card, walletId, userId) {
     try {
       return await this.cardModel.create({
@@ -39,23 +45,45 @@ export class CardsService {
     }
   }
 
+  /**
+   * Delete a card by id
+   * @param cardId card id
+   */
   async delete(cardId: string) {
     return await this.cardModel.findByIdAndRemove(cardId);
   }
 
+  /**
+   * Get card by id
+   * @param cardId cardId
+   */
   async findById(cardId: string) {
     return await this.cardModel.findById(cardId);
   }
 
+  /**
+   * Get cards by user id
+   * @param userId user id
+   */
   async getByUserId(userId: string) {
     return await this.cardModel.find({ user: userId });
   }
 
+  /**
+   * Get all cards
+   */
   async index() {
     return await this.cardModel.find();
   }
 
+  /**
+   * Get a ordered list of best cards
+   * @param walletId wallet id
+   * @param date date of transaction
+   */
   async getBestCards(walletId: string, date: any): Promise<[Card]> {
+    // todo: refactor to rxjs
+
     const cards = await this.cardModel
       .find({
         wallet: walletId,
