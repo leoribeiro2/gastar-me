@@ -8,6 +8,10 @@ export class ConfigService {
     this.envConfig = dotenv.parse(fs.readFileSync(filePath));
   }
 
+  /**
+   * Get environment value by key
+   * @param key environment key
+   */
   get(key: string): string {
     return this.envConfig[key];
   }

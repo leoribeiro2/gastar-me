@@ -13,6 +13,14 @@ export class TransactionsService {
     private readonly cardsService: CardsService,
   ) {}
 
+  /**
+   * Make a transaction using one or more cards
+   * @param walletId wallet id
+   * @param userId user id
+   * @param description transaction description
+   * @param totalAmount total amount of trasaction
+   * @param cards list of best cards
+   */
   async makeATransaction(
     walletId: string,
     userId: string,
@@ -20,6 +28,8 @@ export class TransactionsService {
     totalAmount: number,
     cards: [any],
   ): Promise<Transaction> {
+    // todo: refactor to rxjs
+
     const usedCards = [];
     let amount: number = totalAmount;
 
@@ -58,16 +68,28 @@ export class TransactionsService {
     });
   }
 
+  /**
+   * Get transactions by user id
+   * @param userId user id
+   */
   async findByUserId(userId: string) {
     return await this.transactionModel
       .find({ user: userId })
       .sort({ createdAt: 1 });
   }
 
+  /**
+   * Get transaction by id
+   * @param id transaction id
+   */
   async findById(id: string) {
     return await this.transactionModel.findById(id);
   }
 
+  /**
+   * Pay a transaction
+   * @param transaction Transaction data
+   */
   async payTransaction(transaction: Transaction) {
     for (const card of transaction.cards) {
       const oldCard = await this.cardsService.findById(card.card);

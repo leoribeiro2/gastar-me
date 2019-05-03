@@ -20,7 +20,14 @@ import { CardsService } from '../cards/cards.service';
 import { MongoIdValidation } from '../helpers/mongoIdValidation';
 import * as moment from 'moment';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
-import { ApiUseTags, ApiBearerAuth, ApiUnauthorizedResponse, ApiOkResponse, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiUseTags,
+  ApiBearerAuth,
+  ApiUnauthorizedResponse,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiUseTags('Transactions')
@@ -35,7 +42,7 @@ export class TransactionsController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ title: 'Create a transaction' })
-  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiCreatedResponse({ description: 'Successful create a transaction' })
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() body: CreateTransactionDTO, @Req() req) {
@@ -65,7 +72,7 @@ export class TransactionsController {
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ title: 'Create trasactions' })
-  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Retrive all user transactions' })
   async getTransactions(@Req() req) {
     const userId = req.user._id;
@@ -76,7 +83,7 @@ export class TransactionsController {
   @Get('/:id')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ title: 'Get a transaction by id' })
-  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Retrive transaction by id' })
   async getTransaction(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;
@@ -97,7 +104,7 @@ export class TransactionsController {
   @Put('/:id')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ title: 'Pay a transaction' })
-  @ApiUnauthorizedResponse({ description: 'User unauthorized'})
+  @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiOkResponse({ description: 'Successful pay a transaction' })
   async payTransaction(@Param() params: MongoIdValidation, @Req() req) {
     const userId = req.user._id;
