@@ -25,22 +25,14 @@ export class WalletsService {
       .populate({ path: 'cards', populate: { path: 'cards' } });
 
     return await wallets.map(wallet => {
-      const remaining: number = wallet._doc.cards.reduce(
-        (a, b) => a.limits.remaining + b.limits.remaining,
-      );
-      const total: number = wallet._doc.cards.reduce(
-        (a, b) => a.limits.total + b.limits.total,
-      );
-      const used: number = wallet._doc.cards.reduce(
-        (a, b) => a.limits.used + b.limits.used,
-      );
+      const limits: number = wallet._doc.cards.reduce((a, b) => ({
+        total: a.limits.total + b.limits.total,
+        used: a.limits.used + b.limits.used,
+        remaining: a.limits.remaining + b.limits.remaining,
+      }));
       return {
         ...wallet._doc,
-        limits: {
-          total,
-          used,
-          remaining,
-        },
+        limits,
       };
     });
   }
@@ -50,22 +42,15 @@ export class WalletsService {
       .findById(walletId)
       .populate({ path: 'cards', populate: { path: 'cards' } });
 
-    const remaining: number = wallet._doc.cards.reduce(
-      (a, b) => a.limits.remaining + b.limits.remaining,
-    );
-    const total: number = wallet._doc.cards.reduce(
-      (a, b) => a.limits.total + b.limits.total,
-    );
-    const used: number = wallet._doc.cards.reduce(
-      (a, b) => a.limits.used + b.limits.used,
-    );
+    const limits: number = wallet._doc.cards.reduce((a, b) => ({
+      total: a.limits.total + b.limits.total,
+      used: a.limits.used + b.limits.used,
+      remaining: a.limits.remaining + b.limits.remaining,
+    }));
+
     return {
       ...wallet._doc,
-      limits: {
-        total,
-        used,
-        remaining,
-      },
+      limits,
     };
   }
 
@@ -79,5 +64,13 @@ export class WalletsService {
     return await this.walletModel.findByIdAndUpdate(walletId, {
       $pull: { cards: cardId },
     });
+  }
+
+  async index() {
+    return await this.walletModel.find();
+  }
+
+  async deleteWallet(id: string) {
+    return this.walletModel.findByIdAndDelete(id);
   }
 }

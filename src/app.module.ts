@@ -7,9 +7,7 @@ import { WalletsModule } from './wallets/wallets.module';
 import { CardsModule } from './cards/cards.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { AuthModule } from './auth/auth.module';
-import * as mongoose from 'mongoose';
-
-mongoose.set('debug', true);
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -29,6 +27,7 @@ mongoose.set('debug', true);
     CardsModule,
     TransactionsModule,
     AuthModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

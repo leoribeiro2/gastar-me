@@ -53,11 +53,14 @@ describe('WalletsService', () => {
       return docs[0];
     },
     find(search) {
-      return {
-        populate() {
-          return docs.filter(doc => doc.user === search.user);
-        },
-      };
+      if (search) {
+        return {
+          populate() {
+            return docs.filter(doc => doc.user === search.user);
+          },
+        };
+      }
+      return docs;
     },
     findById(id) {
       return {
@@ -80,6 +83,9 @@ describe('WalletsService', () => {
           cards: [],
         };
       }
+    },
+    findByIdAndDelete(id) {
+      return true;
     },
   };
 
@@ -138,6 +144,18 @@ describe('WalletsService', () => {
         id: '5cc5375035cade6de3e47107',
         cards: [],
       });
+    });
+  });
+
+  it('should get all wallets', async () => {
+    await service.index().then(wallets => {
+      expect(wallets).toEqual(docs);
+    });
+  });
+
+  it('should delete an wallet', async () => {
+    await service.deleteWallet('5cc5375035cade6de3e47107').then(res => {
+      expect(res).toBeTruthy();
     });
   });
 });
