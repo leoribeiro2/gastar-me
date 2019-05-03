@@ -5,7 +5,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { CardsService } from '../cards/cards.service';
 import { WalletsService } from '../wallets/wallets.service';
 import { CreateTransactionDTO } from './dto/createTransaction.dto';
-import { MongoIdValidation } from 'src/helpers/mongoIdValidation';
+import { MongoIdValidation } from './../helpers/mongoIdValidation';
 
 describe('Transactions Controller', () => {
   let controller: TransactionsController;
