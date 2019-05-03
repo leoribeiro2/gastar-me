@@ -15,6 +15,7 @@ import { CreateTransactionDTO } from './dto/createTransaction.dto';
 import { WalletsService } from '../wallets/wallets.service';
 import { CardsService } from '../cards/cards.service';
 import { MongoIdValidation } from '../helpers/mongoIdValidation';
+import * as moment from 'moment';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -39,7 +40,7 @@ export class TransactionsController {
       );
     }
 
-    const cards = await this.cardsService.getBestCards(wallet.id);
+    const cards = await this.cardsService.getBestCards(wallet.id, moment());
     return await this.transactionsService.makeATransaction(
       wallet.id,
       userId,
@@ -62,7 +63,7 @@ export class TransactionsController {
 
     const transaction = await this.transactionsService.findById(params.id);
     if (!transaction) {
-      throw new NotFoundException();
+      throw new NotFoundException('Transaction not found');
     }
 
     // todo: change to req user
@@ -79,7 +80,7 @@ export class TransactionsController {
 
     const transaction = await this.transactionsService.findById(params.id);
     if (!transaction) {
-      throw new NotFoundException();
+      throw new NotFoundException('Transaction not found');
     }
 
     // todo: change to req user
