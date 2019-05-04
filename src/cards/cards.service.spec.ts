@@ -233,8 +233,8 @@ describe('WalletService', () => {
       await service
         .getBestCards(walletId, moment('02-05-2019', 'DD-MM-YYYY'))
         .then((cards: any) => {
-          expect(cards[0]._doc._id).toEqual('5cc60519d3f5e97094381fd7');
-          expect(cards[1]._doc._id).toEqual('5cc60519d3f5e97094381fd5');
+          expect(cards[0]._id).toEqual('5cc60519d3f5e97094381fd7');
+          expect(cards[1]._id).toEqual('5cc60519d3f5e97094381fd5');
         });
     });
 
