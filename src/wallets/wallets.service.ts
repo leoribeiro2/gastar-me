@@ -90,7 +90,31 @@ export class WalletsService {
   }
 
   async index() {
-    return await this.walletModel.find();
+    const wallets = await this.walletModel
+      .find()
+      .populate({ path: 'cards', populate: { path: 'cards' } });
+
+    return await wallets.map(wallet => {
+      let limits;
+      if (wallet.cards.length > 0) {
+        limits = wallet.cards.reduce((a, b) => ({
+          total: a.limits.total + b.limits.total,
+          used: a.limits.used + b.limits.used,
+          remaining: a.limits.remaining + b.limits.remaining,
+        }));
+      } else {
+        limits = {
+          total: 0,
+          used: 0,
+          remaining: 0,
+        };
+      }
+
+      return {
+        ...wallet._doc,
+        limits,
+      };
+    });
   }
 
   async deleteWallet(id: string) {

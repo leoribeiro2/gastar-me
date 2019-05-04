@@ -12,6 +12,11 @@ describe('WalletsService', () => {
       const doc = {
         id: '5cc5375035cade6de3e47107',
         user: wallet.user,
+        imits: {
+          remaining: 5000,
+          total: 10000,
+          used: 5000,
+        },
         cards: [
           {
             limits: {
@@ -31,6 +36,11 @@ describe('WalletsService', () => {
         _doc: {
           id: '5cc5375035cade6de3e47107',
           user: wallet.user,
+          limits: {
+            remaining: 5000,
+            total: 10000,
+            used: 5000,
+          },
           cards: [
             {
               limits: {
@@ -60,7 +70,11 @@ describe('WalletsService', () => {
           },
         };
       }
-      return docs;
+      return {
+        populate() {
+          return docs;
+        },
+      };
     },
     findById(id) {
       return {
@@ -149,7 +163,11 @@ describe('WalletsService', () => {
 
   it('should get all wallets', async () => {
     await service.index().then(wallets => {
-      expect(wallets).toEqual(docs);
+      expect(wallets[0].limits).toEqual({
+        remaining: 5000,
+        total: 10000,
+        used: 5000,
+      });
     });
   });
 

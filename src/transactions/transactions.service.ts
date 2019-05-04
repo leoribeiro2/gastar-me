@@ -32,6 +32,7 @@ export class TransactionsService {
 
     const usedCards = [];
     let amount: number = totalAmount;
+
     for (const card of cards) {
       const isComplete: boolean = amount < card.limits.remaining;
 
