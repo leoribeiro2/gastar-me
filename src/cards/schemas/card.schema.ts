@@ -12,6 +12,7 @@ export const CardSchema = new mongoose.Schema(
     },
     number: {
       type: String,
+      unique: true,
     },
     cardHolderName: String,
     cvv: Number,

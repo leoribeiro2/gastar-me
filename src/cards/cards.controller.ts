@@ -47,13 +47,12 @@ export class CardsController {
       throw new NotFoundException('Wallet not found');
     }
 
-    // todo: check if user is owner of wallet our admin user
-    if (wallet.user.toString() !== userId) {
+    if (wallet.user.toString() !== userId.toString()) {
       throw new UnauthorizedException();
     }
 
     const cardCreated = await this.cardsService.create(card, wallet.id, userId);
-    await this.walletsService.addCard(wallet.id, cardCreated.id);
+    await this.walletsService.addCard(wallet._id, cardCreated.id);
     return cardCreated;
   }
 
@@ -85,7 +84,7 @@ export class CardsController {
     }
 
     // todo: check if user is owner of wallet our admin user
-    if (card.user.toString() !== userId) {
+    if (card.user.toString() !== userId.toString()) {
       throw new UnauthorizedException();
     }
 
@@ -107,11 +106,11 @@ export class CardsController {
     }
 
     // todo: check if user is owner of wallet our admin user
-    if (card.user.toString() !== userId) {
+    if (card.user.toString() !== userId.toString()) {
       throw new UnauthorizedException();
     }
 
-    await this.walletsService.deleteCard(card.wallet.id, card.id);
+    await this.walletsService.deleteCard(card.wallet, card.id);
     await this.cardsService.delete(card.id);
 
     return {

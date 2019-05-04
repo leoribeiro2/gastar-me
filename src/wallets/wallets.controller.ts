@@ -66,7 +66,7 @@ export class WalletsController {
       throw new NotFoundException();
     }
 
-    if (wallet.user.toString() !== userId) {
+    if (wallet.user.toString() !== userId.toString()) {
       throw new UnauthorizedException();
     }
 

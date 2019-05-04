@@ -109,7 +109,7 @@ export class CardsService {
           'DD-MM',
         );
         return {
-          ...card,
+          ...card._doc,
           remainingDaysForClose: closeDate.diff(date, 'days'),
         };
       })

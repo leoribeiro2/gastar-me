@@ -96,7 +96,7 @@ export class TransactionsController {
     }
 
     // todo: change to req user
-    if (transaction.user.toString() !== userId) {
+    if (transaction.user.toString() !== userId.toString()) {
       throw new UnauthorizedException();
     }
 
@@ -118,7 +118,7 @@ export class TransactionsController {
     }
 
     // todo: change to req user
-    if (transaction.user.toString() !== userId) {
+    if (transaction.user.toString() !== userId.toString()) {
       throw new UnauthorizedException();
     }
 

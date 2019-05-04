@@ -25,11 +25,21 @@ export class WalletsService {
       .populate({ path: 'cards', populate: { path: 'cards' } });
 
     return await wallets.map(wallet => {
-      const limits: number = wallet._doc.cards.reduce((a, b) => ({
-        total: a.limits.total + b.limits.total,
-        used: a.limits.used + b.limits.used,
-        remaining: a.limits.remaining + b.limits.remaining,
-      }));
+      let limits;
+      if (wallet.cards.length > 0) {
+        limits = wallet.cards.reduce((a, b) => ({
+          total: a.limits.total + b.limits.total,
+          used: a.limits.used + b.limits.used,
+          remaining: a.limits.remaining + b.limits.remaining,
+        }));
+      } else {
+        limits = {
+          total: 0,
+          used: 0,
+          remaining: 0,
+        };
+      }
+
       return {
         ...wallet._doc,
         limits,
@@ -42,11 +52,24 @@ export class WalletsService {
       .findById(walletId)
       .populate({ path: 'cards', populate: { path: 'cards' } });
 
-    const limits: number = wallet._doc.cards.reduce((a, b) => ({
-      total: a.limits.total + b.limits.total,
-      used: a.limits.used + b.limits.used,
-      remaining: a.limits.remaining + b.limits.remaining,
-    }));
+    if (!wallet) {
+      return null;
+    }
+
+    let limits;
+    if (wallet.cards.length > 0) {
+      limits = wallet.cards.reduce((a, b) => ({
+        total: a.limits.total + b.limits.total,
+        used: a.limits.used + b.limits.used,
+        remaining: a.limits.remaining + b.limits.remaining,
+      }));
+    } else {
+      limits = {
+        total: 0,
+        used: 0,
+        remaining: 0,
+      };
+    }
 
     return {
       ...wallet._doc,

@@ -22,7 +22,6 @@ export class CreateCardDto {
   @IsNotEmpty()
   @MaxLength(16)
   @MinLength(15)
-  @IsNumber()
   number: string;
 
   @ApiModelProperty({ required: true })
@@ -31,7 +30,7 @@ export class CreateCardDto {
 
   @ApiModelProperty({ required: true, maxLength: 3 })
   @IsNotEmpty()
-  @MaxLength(3)
+  @Max(999)
   cvv: number;
 
   @ApiModelProperty({ required: true })
